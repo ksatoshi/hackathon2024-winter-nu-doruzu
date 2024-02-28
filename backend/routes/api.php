@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/release',function (){
+Route::get('/company',function (){
     // TODO:さすがにもう少し整える必要がある
 
     $APIKEY = env('PRTIMES_APIKEY');
