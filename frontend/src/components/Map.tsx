@@ -1,71 +1,86 @@
-"use client";
+'use client'
 
-import React, { useRef, useEffect, useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
-import MapboxLanguage from "@mapbox/mapbox-gl-language";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React, { useEffect, useRef, useState } from 'react'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import mapboxgl from 'mapbox-gl'
+import MapboxLanguage from '@mapbox/mapbox-gl-language'
 
 const addEventListeners = (map: mapboxgl.Map) => {
-  map.on("mouseover", (e) => {
-    const features = map.queryRenderedFeatures(e.point);
-    const mouseOnMap = features.length > 0;
+  map.on('mouseover', (e) => {
+    const features = map.queryRenderedFeatures(e.point)
+    const mouseOnMap = features.length > 0
+    map.getCanvas().style.cursor = mouseOnMap ? 'pointer' : ''
+  })
 
-    map.getCanvas().style.cursor = mouseOnMap ? "pointer" : "";
-  });
+  map.on('click', (e) => {
+    const lngLat = e.lngLat
+    new mapboxgl.Marker().setLngLat(lngLat).addTo(map)
+  })
 
-  map.on("click", (e) => {
-    const lngLat = e.lngLat;
-  });
+  map.on('mousedown', () => {
+    map.getCanvas().style.cursor = 'grabbing'
+  })
 
-  map.on("mousedown", () => {
-    map.getCanvas().style.cursor = "grabbing";
-  });
+  map.on('mouseup', () => {
+    map.getCanvas().style.cursor = 'pointer'
+  })
+}
 
-  map.on("mouseup", () => {
-    map.getCanvas().style.cursor = "pointer";
-  });
-};
+async function fetchCoordinates() {
+  const response = await fetch('https://example.com/api/coordinates')
+  return await response.json()
+}
 
 export default function SimpleMap() {
-  mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
-  const mapContainer = useRef(null);
-  const [map, setMap] = useState(null);
+  mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
+  const [map, setMap] = useState(null)
+  const mapContainer = useRef(null)
 
   useEffect(() => {
     const initializeMap = ({
       setMap,
-      mapContainer,
+      mapContainer
     }: {
-      setMap: any;
-      mapContainer: any;
+      setMap: any
+      mapContainer: any
     }) => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         center: [139.7670516, 35.6811673],
         zoom: 14,
-        style: "mapbox://styles/mapbox/streets-v12",
-        accessToken: mapboxgl.accessToken,
-      });
+        style: 'mapbox://styles/mapbox/streets-v12',
+        accessToken: mapboxgl.accessToken
+      })
 
-      const language = new MapboxLanguage({ defaultLanguage: "ja" });
-      map.addControl(language);
-      map.addControl(new mapboxgl.NavigationControl());
+      const language = new MapboxLanguage({ defaultLanguage: 'ja' })
+      map.addControl(language)
+      map.addControl(new mapboxgl.NavigationControl())
 
-      map.on("load", () => {
-        setMap(map);
-        map.resize();
-      });
+      map.on('load', () => {
+        setMap(map)
+        map.resize()
+      })
 
-      addEventListeners(map);
-    };
+      addEventListeners(map)
+    }
 
-    if (!map) initializeMap({ setMap, mapContainer });
-  }, [map]);
+    if (!map) {
+      initializeMap({ setMap, mapContainer })
+    }
+  }, [map])
+
+  const handleClick = () => {
+    if (map) {
+      new mapboxgl.Marker().setLngLat([139.7670516, 35.6811673]).addTo(map)
+    }
+  }
 
   return (
-    <div style={{ width: "80vw", height: "100vh" }}>
-      <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
+    <div style={{ width: '80vw', height: '100vh' }}>
+      <button type="button" className="bg-blue-700 p-3" onClick={handleClick}>
+        Click!
+      </button>
+      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
     </div>
-  );
+  )
 }
