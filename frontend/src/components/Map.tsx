@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const addEventListeners = (map: mapboxgl.Map) => {
   map.on("mouseover", (e) => {
@@ -63,7 +64,7 @@ export default function SimpleMap() {
   }, [map]);
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "80vw", height: "100vh" }}>
       <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
     </div>
   );

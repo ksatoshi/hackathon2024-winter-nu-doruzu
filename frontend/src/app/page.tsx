@@ -1,5 +1,7 @@
 import SimpleMap from "@/components/Map";
 import SearchInput from "@/components/SearchInput";
+import Listview from "@/components/Listview";
+
 
 export default function Home() {
   return (
