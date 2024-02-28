@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 export default function SimpleMap() {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
@@ -38,7 +39,7 @@ export default function SimpleMap() {
   }, [map]);
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "80vw", height: "100vh" }}>
       <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
     </div>
   );
