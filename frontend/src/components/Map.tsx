@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import lng_lat from '@maplibre/maplibre-gl-style-spec/src/coordinates/lng_lat'
 import axios from 'axios'
 
-import Toggle from '@/components/Toggle'
+import ToggleParent from '@/components/ToggleParent'
 import { CoordinatesData } from '@/types/types'
 
 async function fetchCoordinates(): Promise<CoordinatesData> {
@@ -78,7 +78,7 @@ export default function SimpleMap() {
 
   return (
     <div style={{ width: '80vw', height: '100vh' }}>
-      <Toggle />
+      <ToggleParent />
       <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
     </div>
   )
