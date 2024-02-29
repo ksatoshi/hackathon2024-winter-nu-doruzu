@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 export default function SearchInput() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('')
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(searchQuery);
-  };
+    e.preventDefault()
+    console.log(searchQuery)
+  }
 
   return (
     <form className="max-w-md mx-auto my-3" onSubmit={(e) => handleSubmit(e)}>
@@ -49,5 +49,5 @@ export default function SearchInput() {
         </button>
       </div>
     </form>
-  );
+  )
 }

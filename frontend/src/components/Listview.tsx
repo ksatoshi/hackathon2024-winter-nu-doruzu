@@ -51,7 +51,7 @@ function Listview() {
   const handleItemClick = (companyId: number) => {
     console.log("Clicked company_id:", companyId);
     setSelectedCompanyId(companyId);
-    // Add any additional logic you want to perform on item click
+  
   };
 
   return (
@@ -68,8 +68,9 @@ function Listview() {
         ))}
       </div>
     </div>
-  );
+  )
 }
+
 
 type ListItemProps = {
   company_id: number;
@@ -91,13 +92,13 @@ function ListItem({ company_id, company_name, description, address, industry, on
             <p className="text-gray-700 text-sm mb-2">{address}</p>
             <p className="text-gray-700 text-sm mb-2">{industry}</p>
           </div>
-          <p className="text-black">
-            {description}
-          </p>
+          <p className="text-black">{description}</p>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
+
 export default Listview;
+
