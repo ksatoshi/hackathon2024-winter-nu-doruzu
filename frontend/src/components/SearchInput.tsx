@@ -2,11 +2,19 @@
 
 import React, { useState } from 'react'
 
-export default function SearchInput() {
+interface SearchInputProps {
+  onClick: () => Promise<void>
+}
+
+export default function SearchInput({ onClick }: SearchInputProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(searchQuery)
+
+    onClick().catch((error) => {
+      console.error(error)
+    })
   }
 
   return (

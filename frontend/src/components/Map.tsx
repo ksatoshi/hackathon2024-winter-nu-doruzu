@@ -1,34 +1,27 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import 'mapbox-gl/dist/mapbox-gl.css'
-import mapboxgl from 'mapbox-gl'
 import MapboxLanguage from '@mapbox/mapbox-gl-language'
+import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import lng_lat from '@maplibre/maplibre-gl-style-spec/src/coordinates/lng_lat'
+import axios from 'axios'
 
-const addEventListeners = (map: mapboxgl.Map) => {
-  map.on('mouseover', (e) => {
-    const features = map.queryRenderedFeatures(e.point)
-    const mouseOnMap = features.length > 0
-    map.getCanvas().style.cursor = mouseOnMap ? 'pointer' : ''
-  })
+import SearchInput from '@/components/SearchInput'
+import { CoordinatesData } from '@/types/types'
 
-  map.on('click', (e) => {
-    const lngLat = e.lngLat
-    new mapboxgl.Marker().setLngLat(lngLat).addTo(map)
-  })
-
-  map.on('mousedown', () => {
-    map.getCanvas().style.cursor = 'grabbing'
-  })
-
-  map.on('mouseup', () => {
-    map.getCanvas().style.cursor = 'pointer'
-  })
+async function fetchCoordinates(): Promise<CoordinatesData> {
+  try {
+    const response = await axios.get('/api')
+    return response.data as CoordinatesData
+  } catch (error) {
+    console.error('Error fetching coordinates:', error)
+    throw error
+  }
 }
 
-async function fetchCoordinates() {
-  const response = await fetch('https://example.com/api/coordinates')
-  return await response.json()
+function addMakerToMap(map: mapboxgl.Map, lngLat: lng_lat | [number, number]) {
+  new mapboxgl.Marker().setLngLat(lngLat).addTo(map)
 }
 
 export default function SimpleMap() {
@@ -38,16 +31,16 @@ export default function SimpleMap() {
 
   useEffect(() => {
     const initializeMap = ({
-      setMap,
-      mapContainer
-    }: {
+                             setMap,
+                             mapContainer
+                           }: {
       setMap: any
       mapContainer: any
     }) => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         center: [139.7670516, 35.6811673],
-        zoom: 14,
+        zoom: 10,
         style: 'mapbox://styles/mapbox/streets-v12',
         accessToken: mapboxgl.accessToken
       })
@@ -61,7 +54,10 @@ export default function SimpleMap() {
         map.resize()
       })
 
-      addEventListeners(map)
+      map.on('click', (e) => {
+        const lngLat = e.lngLat
+        addMakerToMap(map, lngLat)
+      })
     }
 
     if (!map) {
@@ -69,14 +65,21 @@ export default function SimpleMap() {
     }
   }, [map])
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (map) {
-      new mapboxgl.Marker().setLngLat([139.7670516, 35.6811673]).addTo(map)
+      try {
+        const data: CoordinatesData = await fetchCoordinates()
+        addMakerToMap(map, data.coordinate)
+      } catch (error) {
+        console.error('Error handling click:', error)
+      }
     }
   }
 
   return (
-    <div ref={mapContainer} style={{ width: "80vw", height: "100vh" }} />
-  );
-
+    <div style={{ width: '80vw', height: '100vh' }}>
+      <SearchInput onClick={handleClick} />
+      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
+    </div>
+  )
 }
