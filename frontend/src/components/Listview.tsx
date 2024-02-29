@@ -35,7 +35,7 @@ function Listview() {
       try {
         const response = await apiClient.get('/companies', {
           params: {
-            per_page: 10,
+            per_page: 100,
             page: 1,
           },
         });
@@ -51,25 +51,24 @@ function Listview() {
   const handleItemClick = (companyId: number) => {
     console.log("Clicked company_id:", companyId);
     setSelectedCompanyId(companyId);
-  
   };
 
   return (
-    <div className='max-h-screen overflow-y-auto flex'>
-      {selectedCompanyId !== null && (
-        <div className=" p-4 bg-gray-200" onClick={() => setSelectedCompanyId(null)}>
-          <p className="text-xl font-bold mb-4">Selected Company ID:</p>
-          <p className="text-2xl font-bold">{selectedCompanyId}</p>
-        </div>
-      )}
-      <div className=''>
+    <div className='flex max-h-screen overflow-y-hidden '>
+      <div className="">
+        {selectedCompanyId !== null && (
+          <SelectedCompanyInfo selectedCompanyId={selectedCompanyId} onClose={() => setSelectedCompanyId(null)} />
+        )}
+      </div>
+      <div className=' overflow-y-auto'>
         {data.map((d, index) => (
           <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
         ))}
       </div>
     </div>
-  )
+  );
 }
+
 
 
 type ListItemProps = {
@@ -98,6 +97,52 @@ function ListItem({ company_id, company_name, description, address, industry, on
     </div>
   )
 }
+
+
+type SelectedCompanyInfoProps = {
+  selectedCompanyId: number | null;
+  onClose: () => void;
+};
+
+const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({ selectedCompanyId, onClose }) => {
+  const [releases, setReleases] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiClient.get(`/companies/${selectedCompanyId}/releases`);
+        //const response = await apiClient.get(`/companies/113690/releases`);
+
+        console.log(response.data);
+        setReleases(response.data);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    if (selectedCompanyId !== null) {
+      fetchData();
+    }
+  }, [selectedCompanyId]);
+
+  return (
+    <div className="p-4 text-red-500 max-w-sm">
+      <button onClick={onClose} className='border border-red-400 px-4 py-2 font-bold'>Close</button>
+
+      {releases.length > 0 ? (
+        releases.map((release) => (
+          <div key={release.release_id} className="release-tile">
+            <p>{release.title}</p>
+          </div>
+        ))
+      ) : (
+        <p>No releases available for this company</p>
+      )}
+    </div>
+  );
+};
+
+
 
 
 export default Listview;
