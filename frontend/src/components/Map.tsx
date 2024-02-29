@@ -76,11 +76,7 @@ export default function SimpleMap() {
   }
 
   return (
-    <div style={{ width: '80vw', height: '100vh' }}>
-      <button type="button" className="bg-blue-700 p-3" onClick={handleClick}>
-        Click!
-      </button>
-      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
-    </div>
-  )
+    <div ref={mapContainer} style={{ width: "80vw", height: "100vh" }} />
+  );
+
 }
