@@ -15,12 +15,12 @@ export async function GET(req: NextRequest) {
   const releases_url = 'https://hackathon.stg-prtimes.net/api/releases'
 
   const queryParams = new URLSearchParams({
-    per_page: '10',
-    page: '1'
+    per_page: '20',
+    page: '3'
   })
 
   const urlWithParams = `${releases_url}?${queryParams.toString()}`
-
+  console.log(urlWithParams)
   try {
     // Fetch releases
     const prtimes_req = await fetch(urlWithParams, {
@@ -40,16 +40,29 @@ export async function GET(req: NextRequest) {
 
     //company_id　から　coordinates　収得
     const getCoordinates = async () => {
-      const coordinatePromises = company_id_list.map(async (id) => {
-        const coords = await fetch(
-          `http://localhost:3000/api/companies/${id}/coordinate`
-        )
-        const result: Coordinates = await coords.json()
-        return result
-      })
+      try {
+        const coordinatePromises = company_id_list.map(async (id) => {
+          const coords = await fetch(
+            `http://localhost:3000/api/companies/${id}/coordinate`
+          )
 
-      const coordinates = await Promise.all(coordinatePromises)
-      return coordinates
+          if (!coords.ok) {
+            console.error(
+              `Error fetching coordinates for company ID ${id}: ${coords.statusText}`
+            )
+            return null // Handle the error appropriately
+          }
+
+          const result: Coordinates = await coords.json()
+          return result
+        })
+
+        const coordinates = await Promise.all(coordinatePromises)
+        return coordinates.filter((coord) => coord !== null) // Filter out any null results
+      } catch (error) {
+        console.error('Error fetching coordinates:', error)
+        throw error // Rethrow the error to be caught in the main catch block
+      }
     }
 
     // company_id　から　企業情報収得
