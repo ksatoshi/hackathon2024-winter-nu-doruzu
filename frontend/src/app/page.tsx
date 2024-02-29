@@ -5,11 +5,11 @@ import Listview from "@/components/Listview";
 
 export default function Home() {
   return (
-    <div className="h-screen w-screen flex flex-col ">
-       <SearchInput />
+    <div className="h-screen w-screen flex flex-col items-center justify-center">
+      <SearchInput />
       <div className="w-full h-full flex">
         <SimpleMap />
-        <Listview/>
+        <Listview />
       </div>
     </div>
   );

@@ -64,8 +64,6 @@ export default function SimpleMap() {
   }, [map]);
 
   return (
-    <div style={{ width: "80vw", height: "100vh" }}>
-      <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
-    </div>
+    <div ref={mapContainer} style={{ width: "80vw", height: "100vh" }} />
   );
 }
