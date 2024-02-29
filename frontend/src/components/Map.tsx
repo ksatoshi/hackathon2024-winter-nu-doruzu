@@ -77,7 +77,7 @@ export default function SimpleMap() {
   }
 
   return (
-    <div style={{ width: '80vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh' }}>
       <Toggle />
       <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
     </div>

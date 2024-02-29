@@ -66,7 +66,7 @@ function Listview() {
           <SelectedCompanyInfo selectedCompanyId={selectedCompanyId} onClose={() => setSelectedCompanyId(null)} />
         )}
       </div>
-      <div className=' overflow-y-auto'>
+      <div className=' overflow-y-auto' style={{ overflowY: 'scroll', scrollbarWidth: 'none' }}>
 
         {data.map((d, index) => (
           <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
@@ -98,14 +98,26 @@ function ListItem({
       className="max-w-md w-full cursor-pointer"
       onClick={() => onItemClick(company_id)}
     >
-      <div className="border-r border-b border-l border-grey-light lg:border-l-0 lg:border-t lg:border-grey-light bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+      <div className=" p-4 flex flex-col justify-between leading-normal  hover:bg-slate-800">
         <div className="mb-6">
           <div>
-            <p className="text-black font-bold text-xl mb-2">{company_name}</p>
-            <p className="text-gray-700 text-sm mb-2">{address}</p>
-            <p className="text-gray-700 text-sm mb-2">{industry}</p>
+            <p className="text-white font-bold text-xl mb-2 ">{company_name}</p>
+            <div className='flex gap-2'>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+              </svg>
+              <p className="text-white text-sm mb-2">{address}</p>
+            </div>
+            <div className='flex gap-2'>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+              </svg>
+              <p className="text-white text-sm mb-2">{industry}</p>
+
+            </div>
+
+            <p className="text-white">{description}</p>
           </div>
-          <p className="text-black">{description}</p>
         </div>
       </div>
     </div>
