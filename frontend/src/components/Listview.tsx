@@ -62,7 +62,11 @@ export default function Listview({ companies }: any) {
 
       <div className=" overflow-y-auto" style={{ overflowY: 'scroll' }}>
         {companies.map((company: CompanyRelease) => (
-          <ListItem key={company.company_id} {...company} onItemClick={handleItemClick} />
+          <ListItem
+            key={company.company_id}
+            {...company}
+            onItemClick={handleItemClick}
+          />
         ))}
       </div>
     </div>
@@ -78,11 +82,7 @@ type ListItemProps = {
   onItemClick: (companyId: number, company_name: string) => void
 }
 
-function ListItem({
-  company_id,
-  company_name,
-  onItemClick
-}: ListItemProps) {
+function ListItem({ company_id, company_name, onItemClick }: ListItemProps) {
   return (
     <div
       className="max-w-2xl w-full cursor-pointer"
@@ -151,7 +151,11 @@ type ReleaseInfoProps = {
   title: string
 }
 
-const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({ selectedCompanyId, selectedCompanyName, onClose }) => {
+const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({
+  selectedCompanyId,
+  selectedCompanyName,
+  onClose
+}) => {
   const [releases, setReleases] = useState([])
   const [mainCategoryName, setmainCategoryName] = useState<String | null>(null)
 
@@ -175,7 +179,7 @@ const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({ selectedCompa
   }, [selectedCompanyId])
 
   return (
-    <div className="p-4 max-w-2xl w-full bg-zinc-800 max-h-screen h-full">
+    <div className="max-w-2xl w-full bg-zinc-800 max-h-screen h-full">
       <button
         onClick={onClose}
         className="border border-red-400 px-4 py-2 mb-5 font-bold rounded-md hover:bg-red-400 hover:border-black"
