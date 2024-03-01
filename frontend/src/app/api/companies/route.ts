@@ -7,7 +7,7 @@ interface Coordinates {
 }
 
 export async function GET() {
-  const PRTIMES_APIKEY = process.env.PRTIMES_APIKEY
+  const PRTIMES_APIKEY = process.env.NEXT_PUBLIC_PRTIMES_APIKEY!
 
   const releases_url = 'https://hackathon.stg-prtimes.net/api/releases'
 

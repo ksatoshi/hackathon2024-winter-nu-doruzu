@@ -11,7 +11,11 @@ export function addMakerToMap(
   map: mapboxgl.Map,
   lngLat: lng_lat | [number, number]
 ) {
-  new mapboxgl.Marker().setLngLat(lngLat).addTo(map)
+  const maker = new mapboxgl.Marker()
+  maker
+    .setLngLat(lngLat)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<h1>Maker</h1>`))
+    .addTo(map)
 }
 
 export default function SimpleMap() {
@@ -42,11 +46,6 @@ export default function SimpleMap() {
       map.on('load', () => {
         setMap(map)
         map.resize()
-      })
-
-      map.on('click', (e) => {
-        const lngLat = e.lngLat
-        addMakerToMap(map, lngLat)
       })
     }
 

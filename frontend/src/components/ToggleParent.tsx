@@ -2,6 +2,7 @@ import Toggle from '@/components/Toggle'
 import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import { CompanyDetails } from '@/types/types'
+import { addMakerToMap } from '@/components/Map'
 
 function getDateInfo(daysToSubtract: number = 0): string {
   const today: Date = new Date()
@@ -20,8 +21,7 @@ const apiClient = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization:
-      'Bearer 37aaaf2e5398eec3521ca0408f9e0817999d81e014c000a3e65b55e6a807060c'
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_PRTIMES_APIKEY!}`
   }
 })
 
@@ -46,9 +46,14 @@ export default function ToggleParent({ map }: ToggleParentProps) {
 
       for (const companyId of companyIdArr) {
         try {
-          const coordinateResponse = await axios.get(
-            `/api/companies/[${companyId}]/coordinate`
-          )
+          const coordinateResponse = await axios
+            .get(`/api/companies/${companyId}/coordinate`)
+            .then((response) => response.data)
+
+          const longitude: number = coordinateResponse.coordinate[0]
+          const latitude: number = coordinateResponse.coordinate[1]
+
+          addMakerToMap(map, [longitude, latitude])
         } catch (error) {
           console.error(
             `Error fetching coordinates for company ${companyId}: ${error}`
