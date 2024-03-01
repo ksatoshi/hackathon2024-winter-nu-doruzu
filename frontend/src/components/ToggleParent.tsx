@@ -93,6 +93,9 @@ export default function ToggleParent({ map }: ToggleProps) {
           const longitude: number = coordinateResponse.coordinate[0]
           const latitude: number = coordinateResponse.coordinate[1]
 
+          console.log(longitude)
+          console.log(latitude)
+
           addMakerToMap(map, [longitude, latitude])
         } catch (error) {
           console.error(
@@ -107,10 +110,10 @@ export default function ToggleParent({ map }: ToggleProps) {
 
   return (
     <div className="flex bg-transparent relative z-10">
-      <div className="h-1/1 w-4/5 self-start bg-black">
+      <div className="self-start bg-black absolute w-full">
         <Toggle onChange={handleToggleValueChange} />
       </div>
-      <div className="w-1/5 bg-black">
+      <div className="bg-black absolute right-0">
         <Listview companies={companies} />
       </div>
     </div>

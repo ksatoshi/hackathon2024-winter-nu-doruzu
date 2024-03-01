@@ -40,7 +40,6 @@ export default function Listview({ companies }: any) {
   )
 
   const handleItemClick = (companyId: number, companyName: string) => {
-    console.log('Clicked company_id:', companyId)
     setSelectedCompanyId(companyId)
     setSelectedCompanyName(companyName)
   }
@@ -179,7 +178,7 @@ const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({
   }, [selectedCompanyId])
 
   return (
-    <div className="max-w-2xl w-full bg-zinc-800 max-h-screen h-full">
+    <div className="max-w-2xl w-full bg-zinc-800 max-h-screen h-full p-4">
       <button
         onClick={onClose}
         className="border border-red-400 px-4 py-2 mb-5 font-bold rounded-md hover:bg-red-400 hover:border-black"
