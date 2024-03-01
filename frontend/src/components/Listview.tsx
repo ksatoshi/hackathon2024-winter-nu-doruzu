@@ -99,7 +99,7 @@ function ListItem({
 }: ListItemProps) {
   return (
     <div
-      className="max-w-md w-full cursor-pointer"
+      className="max-w-2xl w-full cursor-pointer"
       onClick={() => onItemClick(company_id, company_name)}
     >
       <div className=" p-4 flex flex-col justify-between leading-normal  hover:bg-zinc-800">
