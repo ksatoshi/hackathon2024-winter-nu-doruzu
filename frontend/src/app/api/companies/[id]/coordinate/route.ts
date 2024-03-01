@@ -24,14 +24,13 @@ export async function GET(
 
   const geocoding_url =
     'https://api.mapbox.com/search/v1/forward/' +
-    company_address+
+    company_address +
     '?access_token=' +
     MAPBOX_APIKEY +
-      '&language=ja&country=jp'
-
+    '&language=ja&country=jp'
 
   let mapbox_req = await fetch(geocoding_url)
-  console.log('status'+mapbox_req.status);
+  console.log('status' + mapbox_req.status)
   let geocoding_origin = await mapbox_req.json()
 
   let coordinate = geocoding_origin['features'][0]['geometry']['coordinates']
