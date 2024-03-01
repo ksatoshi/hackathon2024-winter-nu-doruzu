@@ -1,3 +1,5 @@
+import mapboxgl from 'mapbox-gl'
+
 export interface CoordinatesData {
   address: string
   capital: number
@@ -16,4 +18,8 @@ export interface CoordinatesData {
 
 export interface CompanyDetails {
   company_id: number
+}
+
+export interface ToggleProps {
+  map: mapboxgl.Map
 }

@@ -55,9 +55,9 @@ export default function SimpleMap() {
   }, [map])
 
   return (
-    <div style={{ width: '80vw', height: '100vh' }}>
+    <div className="relative" style={{ width: '100vw', height: '100vh' }}>
       <ToggleParent map={map!} />
-      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
+      <div className="absolute top-0 left-0" ref={mapContainer} style={{ width: '100%', height: '100%' }} />
     </div>
   )
 }
