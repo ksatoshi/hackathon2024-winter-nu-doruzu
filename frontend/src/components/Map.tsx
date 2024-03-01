@@ -41,7 +41,7 @@ export default function SimpleMap() {
         container: mapContainer.current,
         center: [139.7670516, 35.6811673],
         zoom: 10,
-        style: 'mapbox://styles/mapbox/streets-v12',
+        style: 'mapbox://styles/mapbox/light-v11',
         accessToken: mapboxgl.accessToken
       })
 

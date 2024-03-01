@@ -70,13 +70,15 @@ function Listview() {
           }} />
         )}
       </div>
-      <div className=' overflow-y-auto' style={{ overflowY: 'scroll', scrollbarWidth: 'none' }}>
+      <div className=' overflow-y-auto' style={{ overflowY: 'scroll' }} >
 
-        {data.map((d, index) => (
-          <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
-        ))}
+        {
+          data.map((d, index) => (
+            <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
+          ))
+        }
       </div>
-    </div>
+    </div >
   );
 }
 
