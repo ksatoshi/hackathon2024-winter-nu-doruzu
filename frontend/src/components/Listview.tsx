@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Link from 'next/link'
 import { Url } from 'next/dist/shared/lib/router/router'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { CompanyRelease } from '@/components/ToggleParent'
 
 type company_info = {
   address: string
@@ -31,8 +31,7 @@ const apiClient = axios.create({
   }
 })
 
-function Listview() {
-  const [data, setData] = useState<company_info[]>([])
+export default function Listview({ companies }: any) {
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
     null
   )
@@ -40,22 +39,7 @@ function Listview() {
     null
   )
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/companies') // Next BackendからFetch
-        console.log(response.data)
-        setData(response.data)
-      } catch (error) {
-        console.error('Failed to fetch data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
   const handleItemClick = (companyId: number, companyName: string) => {
-    console.log('Clicked company_id:', companyId)
     setSelectedCompanyId(companyId)
     setSelectedCompanyName(companyName)
   }
@@ -76,8 +60,12 @@ function Listview() {
       </div>
 
       <div className=" overflow-y-auto" style={{ overflowY: 'scroll' }}>
-        {data.map((d, index) => (
-          <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
+        {companies.map((company: CompanyRelease) => (
+          <ListItem
+            key={company.company_id}
+            {...company}
+            onItemClick={handleItemClick}
+          />
         ))}
       </div>
     </div>
@@ -93,14 +81,7 @@ type ListItemProps = {
   onItemClick: (companyId: number, company_name: string) => void
 }
 
-function ListItem({
-  company_id,
-  company_name,
-  description,
-  address,
-  industry,
-  onItemClick
-}: ListItemProps) {
+function ListItem({ company_id, company_name, onItemClick }: ListItemProps) {
   return (
     <div
       className="max-w-2xl w-full cursor-pointer"
@@ -125,7 +106,7 @@ function ListItem({
                   d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
                 />
               </svg>
-              <p className="text-white text-sm mb-2">{address}</p>
+              {/*<p className="text-white text-sm mb-2">{address}</p>*/}
             </div>
             <div className="flex gap-2">
               <svg
@@ -142,10 +123,10 @@ function ListItem({
                   d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
                 />
               </svg>
-              <p className="text-white text-sm mb-2">{industry}</p>
+              {/*<p className="text-white text-sm mb-2">{industry}</p>*/}
             </div>
 
-            <p className="text-white">{description}</p>
+            {/*<p className="text-white">{description}</p>*/}
           </div>
         </div>
       </div>
@@ -197,7 +178,7 @@ const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({
   }, [selectedCompanyId])
 
   return (
-    <div className="p-4 max-w-2xl w-full bg-zinc-800 max-h-screen h-full">
+    <div className="max-w-2xl w-full bg-zinc-800 max-h-screen h-full p-4">
       <button
         onClick={onClose}
         className="border border-red-400 px-4 py-2 mb-5 font-bold rounded-md hover:bg-red-400 hover:border-black"
@@ -267,5 +248,3 @@ const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({
     </div>
   )
 }
-
-export default Listview

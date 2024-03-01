@@ -1,8 +1,8 @@
 import Toggle from '@/components/Toggle'
+import React, { useRef, useState } from 'react'
 import axios from 'axios'
-import mapboxgl from 'mapbox-gl'
-import { CompanyDetails } from '@/types/types'
 import { addMakerToMap } from '@/components/Map'
+import { ToggleProps } from '@/types/types'
 import Listview from '@/components/Listview'
 
 function getDateInfo(daysToSubtract: number = 0): string {
@@ -26,8 +26,24 @@ const apiClient = axios.create({
   }
 })
 
-interface ToggleParentProps {
-  map: mapboxgl.Map
+export interface CompanyRelease {
+  company_name: string
+  company_id: number
+  release_id: number
+  title: string
+  subtitle: string
+  url: string
+  lead_paragraph: string
+  body: string
+  main_image: string
+  main_image_fastly: string
+  main_category_id: number
+  main_category_name: string
+  sub_category_id: number
+  sub_category_name: string
+  release_type: string
+  created_at: string
+  like: number
 }
 
 function determineNumberOfPagesToFetch(value: number): number {
@@ -49,7 +65,9 @@ function determineNumberOfPagesToFetch(value: number): number {
 }
 
 // Problem: すでに描画されているマーカーも再描画されてしまう
-export default function ToggleParent({ map }: ToggleParentProps) {
+export default function ToggleParent({ map }: ToggleProps) {
+  const [companies, setCompanies] = useState<CompanyRelease[]>([])
+
   const handleToggleValueChange = async (value: number) => {
     try {
       const subtractedDate: string = getDateInfo(value)
@@ -60,14 +78,16 @@ export default function ToggleParent({ map }: ToggleParentProps) {
         }
       })
       const releases = await response.data
-      const companyIdArr: number[] = releases.map(
-        (ele: CompanyDetails) => ele.company_id
+      const companyArr: CompanyRelease[] = releases.map(
+        (ele: CompanyRelease) => ele
       )
 
-      for (const companyId of companyIdArr) {
+      setCompanies(companyArr)
+
+      for (const company of companies) {
         try {
           const coordinateResponse = await axios
-            .get(`/api/companies/${companyId}/coordinate`)
+            .get(`/api/companies/${company.company_id}/coordinate`)
             .then((response) => response.data)
 
           const longitude: number = coordinateResponse.coordinate[0]
@@ -79,7 +99,7 @@ export default function ToggleParent({ map }: ToggleParentProps) {
           addMakerToMap(map, [longitude, latitude])
         } catch (error) {
           console.error(
-            `Error fetching coordinates for company ${companyId}: ${error}`
+            `Error fetching coordinates for company ${company.company_id}: ${error}`
           )
         }
       }
@@ -88,5 +108,14 @@ export default function ToggleParent({ map }: ToggleParentProps) {
     }
   }
 
-  return <Toggle onChange={handleToggleValueChange} />
+  return (
+    <div className="flex bg-transparent relative z-10">
+      <div className="self-start bg-black absolute w-full">
+        <Toggle onChange={handleToggleValueChange} />
+      </div>
+      <div className="bg-black absolute right-0">
+        <Listview companies={companies} />
+      </div>
+    </div>
+  )
 }
