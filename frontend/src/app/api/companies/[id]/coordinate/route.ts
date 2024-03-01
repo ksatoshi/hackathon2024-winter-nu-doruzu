@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const PRTIMES_APIKEY = process.env.PRTIMES_APIKEY
   const MAPBOX_APIKEY = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
@@ -11,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     method: 'GET',
     headers: {
       Accept: 'application/json',
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: 'Bearer ' + PRTIMES_APIKEY
     }
   })
