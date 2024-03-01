@@ -13,3 +13,7 @@ export interface CoordinatesData {
   url: string
   coordinate: [number, number]
 }
+
+export interface CompanyDetails {
+  company_id: number
+}

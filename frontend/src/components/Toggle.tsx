@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react'
 
-export default function Toggle() {
+export default function Toggle({ onChange }: any) {
   const [toggleValue, setToggleValue] = useState(0)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: number = parseInt(e.target.value)
-    console.log(value)
     setToggleValue(value)
+    onChange(value)
   }
 
   return (

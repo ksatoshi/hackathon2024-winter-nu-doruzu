@@ -4,18 +4,17 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const PRTIMES_APIKEY = process.env.PRTIMES_APIKEY
-
-  const MAPBOX_APIKEY = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+  const PRTIMES_APIKEY = process.env.NEXT_PUBLIC_PRTIMES_APIKEY!
+  const MAPBOX_APIKEY = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 
   const company_id = params.id
-  const companydetail_url =
-    'https://hackathon.stg-prtimes.net/api/companies/' + company_id
+  const companydetail_url = `https://hackathon.stg-prtimes.net/api/companies/${company_id}`
 
   let prtimes_req = await fetch(companydetail_url, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: 'Bearer ' + PRTIMES_APIKEY
     }
   })

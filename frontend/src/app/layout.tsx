@@ -1,15 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter, Lato, Noto_Sans_JP } from 'next/font/google'
 import './globals.css'
-import { GeolocationProvider } from '@/contexts/GeolocationProvider';
-
+import { GeolocationProvider } from '@/contexts/GeolocationProvider'
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
-  variable: '--font-noto-sans-jp',
-
+  variable: '--font-noto-sans-jp'
 })
-
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,10 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={notoSansJP.className}>
-        <GeolocationProvider>
-          {children}
-        </GeolocationProvider>
-
+        <GeolocationProvider>{children}</GeolocationProvider>
       </body>
     </html>
   )
