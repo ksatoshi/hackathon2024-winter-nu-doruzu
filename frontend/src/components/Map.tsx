@@ -11,10 +11,25 @@ export function addMakerToMap(
   map: mapboxgl.Map,
   lngLat: lng_lat | [number, number]
 ) {
+
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+  <div class="flex gap-5 ">
+    <p class="text-xs text-amber-500">Genre</p>
+     <h3 class="text-sm">Company_name</h3>
+    </div>
+  </div>
+`);
+
+
   const maker = new mapboxgl.Marker()
   maker
     .setLngLat(lngLat)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<h1>Maker</h1>`))
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <div class="flex flex-col gap-1">
+      <p class="text-xs text-amber-500">Genre</p>
+      <h3 class="text-sm text-amber-500">Company_name</h3>
+    </div>
+  `))
     .addTo(map)
 }
 
