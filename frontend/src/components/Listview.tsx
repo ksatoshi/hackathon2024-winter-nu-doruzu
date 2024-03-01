@@ -70,13 +70,15 @@ function Listview() {
           }} />
         )}
       </div>
-      <div className=' overflow-y-auto' style={{ overflowY: 'scroll', scrollbarWidth: 'none' }}>
+      <div className=' overflow-y-auto' style={{ overflowY: 'scroll' }} >
 
-        {data.map((d, index) => (
-          <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
-        ))}
+        {
+          data.map((d, index) => (
+            <ListItem key={d.company_id} {...d} onItemClick={handleItemClick} />
+          ))
+        }
       </div>
-    </div>
+    </div >
   );
 }
 
@@ -172,7 +174,7 @@ const SelectedCompanyInfo: React.FC<SelectedCompanyInfoProps> = ({ selectedCompa
     <div className="p-4 max-w-2xl w-full bg-zinc-800 max-h-screen h-full">
       <button onClick={onClose} className='border border-red-400 px-4 py-2 mb-5 font-bold rounded-md hover:bg-red-400 hover:border-black'>Close</button>
 
-      <p className='mb-1  text-xs font-bold border max-w-fit px-2 rounded-md'>{mainCategoryName}</p>
+      <p className='mb-1 text-xs font-bold border border-[#ebdbb2] max-w-fit px-2 rounded-md text-[#ebdbb2]'>{mainCategoryName}</p>
       <h1 className='text-xl font-bold mb-4'>{selectedCompanyName} </h1>
 
       {releases.length > 0 ? (
