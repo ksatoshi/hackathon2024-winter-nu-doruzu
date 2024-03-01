@@ -3,6 +3,7 @@ import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import { CompanyDetails } from '@/types/types'
 import { addMakerToMap } from '@/components/Map'
+import Listview from '@/components/Listview'
 
 function getDateInfo(daysToSubtract: number = 0): string {
   const today: Date = new Date()
@@ -29,13 +30,32 @@ interface ToggleParentProps {
   map: mapboxgl.Map
 }
 
+function determineNumberOfPagesToFetch(value: number): number {
+  if (value < 20) {
+    return 10
+  } else if (value < 50) {
+    return 20
+  } else if (value < 100) {
+    return 40
+  } else if (value < 365 / 2) {
+    return 50
+  } else if (value < 200) {
+    return 70
+  } else if (value < 300) {
+    return 80
+  } else {
+    return 100
+  }
+}
+
+// Problem: すでに描画されているマーカーも再描画されてしまう
 export default function ToggleParent({ map }: ToggleParentProps) {
   const handleToggleValueChange = async (value: number) => {
     try {
       const subtractedDate: string = getDateInfo(value)
       const response = await apiClient.get('/releases', {
         params: {
-          per_page: 10,
+          per_page: determineNumberOfPagesToFetch(value),
           from_date: subtractedDate
         }
       })
@@ -52,6 +72,9 @@ export default function ToggleParent({ map }: ToggleParentProps) {
 
           const longitude: number = coordinateResponse.coordinate[0]
           const latitude: number = coordinateResponse.coordinate[1]
+
+          console.log(longitude)
+          console.log(latitude)
 
           addMakerToMap(map, [longitude, latitude])
         } catch (error) {
