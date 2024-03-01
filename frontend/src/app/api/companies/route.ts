@@ -1,15 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import { CompanyDetails } from '@/types/types'
 
 interface Coordinates {
   lng: number
   lat: number
 }
 
-interface CompanyDetails {
-  company_id: number
-}
-
-export async function GET(req: NextRequest) {
+export async function GET() {
   const PRTIMES_APIKEY = process.env.PRTIMES_APIKEY
 
   const releases_url = 'https://hackathon.stg-prtimes.net/api/releases'
